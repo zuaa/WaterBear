@@ -3,10 +3,13 @@ var parse = require('./baseparse');
 var lineReader = require('line-reader');
 exports.search = function(key, cb) {
 	var url = "http://www.mouser.cn/Search/Refine.aspx?Keyword=" + key;
+	console.log(url);
 	parse.readmsg(url, function(html) {
 		var $ = cheerio.load(html);
 		var re = [];
+		console.log(html)
 		$('.SearchResultsRowOdd').each(function(index, item) {
+			console.log(item);
 			if ($(item).find("td").eq(2).text().trim().length > 2) {
 				re.push({
 					"spn": $(item).find("td").eq(2).text().trim(),

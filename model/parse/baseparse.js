@@ -25,6 +25,28 @@ exports.readmsg = function(url, cb) {
 		console.log(e);
 	}
 }
+exports.readmsgGbk = function(url, cb) {
+	try {
+		http.get(url,
+			function(res) {
+				var bufferHelper = new BufferHelper();
+				res.on('data',
+					function(chunk) {
+						bufferHelper.concat(chunk);
+					});
+
+				res.on('end',
+					function() {
+						var html = iconv.decode(bufferHelper.toBuffer(), 'GBK');
+						var $ = cheerio.load(html);
+						console.log(url + "::::" + html.length)
+						cb(html);
+					});
+			});
+	} catch (e) {
+		console.log(e);
+	}
+}
 exports.readmsgBycode = function(url, code, cb) {
 	try {
 		http.get(url,
